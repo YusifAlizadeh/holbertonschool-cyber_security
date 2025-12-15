@@ -1,2 +1,2 @@
 #!/bin/bash
-hostnamectl
+lsb_release -i -s
