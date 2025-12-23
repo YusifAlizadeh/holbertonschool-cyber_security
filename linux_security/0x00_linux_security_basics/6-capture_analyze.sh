@@ -1,2 +1,2 @@
 #!/bash/sudo
-sudo tcpdump -5
+sudo tcpdump -c 5
