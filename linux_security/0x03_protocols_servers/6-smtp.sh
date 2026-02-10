@@ -1,2 +1,2 @@
 #!/bin/bash
-echo "QUIT" | openssl s_client -starttls smtp -connect YOUR_HOST:25 2>/dev/null | grep -q "STARTTLS" || echo "STARTTLS not configured"
+grep -q "^smtpd_tls_security_level" /etc/postfix/main.cf || echo "STARTTLS not configured"
