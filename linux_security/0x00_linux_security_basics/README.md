@@ -37,6 +37,7 @@ Example usage:
 ```bash
 chmod +x 6-capture_analyze.sh
 sudo ./6-capture_analyze.sh
+```
 
 ⚠️ Disclaimer
 
