@@ -41,7 +41,6 @@ def read_write_heap(pid, search_string, replace_string):
                 if "[heap]" in line:
                     heap = line
                     break
-            
             if not heap:
                 print("Error: Could not find the heap segment.")
                 sys.exit(1)
@@ -73,8 +72,6 @@ def read_write_heap(pid, search_string, replace_string):
             mem_file.seek(heap_start + offset)
             mem_file.write(replace_bytes.ljust(len(search_bytes), b'\x00'))
 
-            print(f"Successfully replaced '{search_string}' with '{replace_string}' in the heap.")
-
     except PermissionError:
         print("Error: Permission denied. Try running as sudo.")
         sys.exit(1)
@@ -89,7 +86,6 @@ def read_write_heap(pid, search_string, replace_string):
 if __name__ == "__main__":
     if len(sys.argv) != 4:
         usage()
-    
     pid = sys.argv[1]
     search_string = sys.argv[2]
     replace_string = sys.argv[3]
