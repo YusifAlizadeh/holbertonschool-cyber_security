@@ -1,7 +1,8 @@
 #!/usr/bin/python3
-import os
+"""
+Module to find and replace a string in the heap of a running process.
+"""
 import sys
-import re
 
 def usage():
     print("Usage: ./read_write_heap.py pid search_string replace_string")
@@ -47,11 +48,7 @@ def read_write_heap(pid, search_string, replace_string):
 
             print("SUCCESS!")
 
-    except PermissionError:
-        sys.exit(1)
-    except FileNotFoundError:
-        sys.exit(1)
-    except Exception as e:
+    except (PermissionError, FileNotFoundError, Exception):
         sys.exit(1)
 
 if __name__ == "__main__":
