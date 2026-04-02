@@ -12,8 +12,7 @@ def find_and_replace_in_heap(pid, search_string, replace_string):
     maps_path = f"/proc/{pid}/maps"
     mem_path = f"/proc/{pid}/mem"
 
-    try:
-        # Поиск сегмента кучи
+    try:и
         with open(maps_path, "r") as maps_file:
             heap = None
             for line in maps_file:
@@ -23,13 +22,11 @@ def find_and_replace_in_heap(pid, search_string, replace_string):
 
             if not heap:
                 return
-
-            # Парсинг диапазона адресов
+�в
             addr_range = heap.split()[0].split("-")
             heap_start = int(addr_range[0], 16)
             heap_end = int(addr_range[1], 16)
-
-        # Чтение и замена в памяти
+и
         with open(mem_path, "r+b") as mem_file:
             mem_file.seek(heap_start)
             heap_data = mem_file.read(heap_end - heap_start)
@@ -37,20 +34,16 @@ def find_and_replace_in_heap(pid, search_string, replace_string):
             offset = heap_data.find(search_string)
             if offset == -1:
                 return
-
-            # Запись новой строки
+�ки
             mem_file.seek(heap_start + offset)
             mem_file.write(replace_string)
-            
-            # ВАЖНО: Выводим SUCCESS! только один раз здесь
-            print("SUCCESS!")
+           print("SUCCESS!")
 
     except (PermissionError, FileNotFoundError, Exception):
         sys.exit(1)
 
 
 def main():
-    # Проверка количества аргументов (Usage error -> status 1)
     if len(sys.argv) != 4:
         print("Usage: read_write_heap.py pid search_string replace_string")
         sys.exit(1)
