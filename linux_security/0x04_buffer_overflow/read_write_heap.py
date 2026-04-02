@@ -1,5 +1,7 @@
 #!/usr/bin/python3
+import os
 import sys
+import re
 
 def usage():
     print("Usage: ./read_write_heap.py pid search_string replace_string")
@@ -21,13 +23,10 @@ def read_write_heap(pid, search_string, replace_string):
                 if "[heap]" in line:
                     heap = line
                     break
-
             if not heap:
                 sys.exit(1)
 
-            addr_range = heap.split()[0].split("-")
-            heap_start = int(addr_range[0], 16)
-            heap_end = int(addr_range[1], 16)
+            heap_start, heap_end = [int(x, 16) for x in heap.split()[0].split("-")]
 
         with open(mem_path, "r+b") as mem_file:
             mem_file.seek(heap_start)
@@ -45,13 +44,21 @@ def read_write_heap(pid, search_string, replace_string):
 
             mem_file.seek(heap_start + offset)
             mem_file.write(replace_bytes.ljust(len(search_bytes), b'\x00'))
+
             print("SUCCESS!")
 
-    except (PermissionError, FileNotFoundError, Exception):
+    except PermissionError:
+        sys.exit(1)
+    except FileNotFoundError:
+        sys.exit(1)
+    except Exception as e:
         sys.exit(1)
 
 if __name__ == "__main__":
     if len(sys.argv) != 4:
         usage()
+    pid = sys.argv[1]
+    search_string = sys.argv[2]
+    replace_string = sys.argv[3]
 
-    read_write_heap(sys.argv[1], sys.argv[2], sys.argv[3])
+    read_write_heap(pid, search_string, replace_string)
