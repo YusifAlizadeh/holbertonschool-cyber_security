@@ -4,20 +4,13 @@ Module to find and replace a string in the heap of a running process.
 """
 import sys
 
-def usage():
-    print("Usage: ./read_write_heap.py pid search_string replace_string")
-    sys.exit(1)
 
 def read_write_heap(pid, search_string, replace_string):
     try:
         pid = int(pid)
-    except ValueError:
-        usage()
+        maps_path = f"/proc/{pid}/maps"
+        mem_path = f"/proc/{pid}/mem"
 
-    maps_path = f"/proc/{pid}/maps"
-    mem_path = f"/proc/{pid}/mem"
-
-    try:
         with open(maps_path, "r") as maps_file:
             heap = None
             for line in maps_file:
@@ -26,7 +19,6 @@ def read_write_heap(pid, search_string, replace_string):
                     break
             if not heap:
                 sys.exit(1)
-
             heap_start, heap_end = [int(x, 16) for x in heap.split()[0].split("-")]
 
         with open(mem_path, "r+b") as mem_file:
@@ -45,17 +37,14 @@ def read_write_heap(pid, search_string, replace_string):
 
             mem_file.seek(heap_start + offset)
             mem_file.write(replace_bytes.ljust(len(search_bytes), b'\x00'))
+            print("SUCCESS!", end="\n")
 
-            print("SUCCESS!")
-
-    except (PermissionError, FileNotFoundError, Exception):
+    except Exception:
         sys.exit(1)
+
 
 if __name__ == "__main__":
     if len(sys.argv) != 4:
-        usage()
-    pid = sys.argv[1]
-    search_string = sys.argv[2]
-    replace_string = sys.argv[3]
-
-    read_write_heap(pid, search_string, replace_string)
+        print("Usage: ./read_write_heap.py pid search_string replace_string")
+        sys.exit(1)
+    read_write_heap(sys.argv[1], sys.argv[2], sys.argv[3])
