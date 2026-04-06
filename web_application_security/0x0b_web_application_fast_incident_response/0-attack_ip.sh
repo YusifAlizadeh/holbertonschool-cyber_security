@@ -1,3 +1,6 @@
+#!/bin/bash
+
+# Define log file
 LOG_FILE="logs.txt"
 
 # Check if file exists
@@ -6,5 +9,5 @@ if [[ ! -f "$LOG_FILE" ]]; then
     exit 1
 fi
 
-# Pipeline to extract IP, count occurrences, sort by frequency, and pick the top one
+# Extract IPs, count them, sort by most frequent, and display the top result
 awk '{print $1}' "$LOG_FILE" | sort | uniq -c | sort -nr | head -n 1
