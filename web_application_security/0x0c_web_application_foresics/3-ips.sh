@@ -1,2 +1,2 @@
 #!/bin/bash
-grep "Accepted" auth.log | grep -v "root" | awk '{print $(NF-3)}' | sort -u | wc -l
+awk '/Accepted password for root/ {print $11}' auth.log | sort -u | wc -l | tr -d '\n'
