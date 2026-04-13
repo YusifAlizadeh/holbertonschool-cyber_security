@@ -1,2 +1,2 @@
 #!/bin/bash
-grep -E "iptables|ufw" auth.log | grep -E "\-A|\-I|allow|deny|add" | wc -l
+grep -iE "iptables" auth.log | grep "A INPUT" | sort -u | wc -l
