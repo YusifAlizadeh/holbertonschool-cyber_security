@@ -6,7 +6,7 @@ def count_user_ids(path)
   counts = Hash.new(0)
 
   data.each do |item|
-    counts[item["userId"]] += 1
+    counts[item['userId']] += 1
   end
 
   counts.each do |user_id, count|
